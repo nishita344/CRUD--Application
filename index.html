@@ -5,235 +5,64 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Users Manager</title>
   <style>
-    /* ===== RESET & BASE ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0f0f1a;
-      color: #e0e0e0;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0e0; min-height: 100vh; padding: 40px 20px; }
 
-    /* ===== HEADER ===== */
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-    .header h1 {
-      font-size: 36px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 1px;
-    }
-    .header p {
-      color: #888;
-      margin-top: 6px;
-      font-size: 14px;
-    }
+    .header { text-align: center; margin-bottom: 40px; }
+    .header h1 { font-size: 36px; font-weight: 700; background: linear-gradient(90deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .header p { color: #888; margin-top: 6px; font-size: 14px; }
 
-    /* ===== LAYOUT ===== */
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1000px; margin: 0 auto; }
 
-    /* ===== CARD ===== */
-    .card {
-      background: #1a1a2e;
-      border: 1px solid #2a2a4a;
-      border-radius: 16px;
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    }
-    .card h2 {
-      font-size: 16px;
-      color: #00c6ff;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+    .card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 16px; padding: 30px; margin-bottom: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .card h2 { font-size: 16px; color: #00c6ff; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-    /* ===== FORM ===== */
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 120px;
-      gap: 12px;
-      align-items: end;
-    }
-    .field label {
-      display: block;
-      font-size: 12px;
-      color: #888;
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .field input {
-      width: 100%;
-      padding: 12px 16px;
-      background: #0f0f1a;
-      border: 1px solid #2a2a4a;
-      border-radius: 8px;
-      color: #e0e0e0;
-      font-size: 14px;
-      outline: none;
-      transition: border 0.2s;
-    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .field label { display: block; font-size: 12px; color: #888; margin-bottom: 6px; text-transform: uppercase; }
+    .field input { width: 100%; padding: 12px 16px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px; color: #e0e0e0; font-size: 14px; outline: none; transition: border 0.2s; }
     .field input:focus { border-color: #0072ff; }
 
-    /* ===== BUTTONS ===== */
-    .btn {
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.1s;
-      color: white;
-      width: 100%;
-    }
-    .btn:hover   { opacity: 0.85; }
-    .btn:active  { transform: scale(0.97); }
-    .btn-green   { background: linear-gradient(135deg, #11998e, #38ef7d); }
-    .btn-blue    { background: linear-gradient(135deg, #0072ff, #00c6ff); }
-    .btn-orange  { background: linear-gradient(135deg, #f7971e, #ffd200); color: #111; }
-    .btn-red     { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
-    .btn-gray    { background: #2a2a4a; }
+    .action-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .btn { padding: 12px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.1s; color: white; width: 100%; }
+    .btn:hover { opacity: 0.85; }
+    .btn:active { transform: scale(0.97); }
+    .btn-green  { background: linear-gradient(135deg, #11998e, #38ef7d); }
+    .btn-blue   { background: linear-gradient(135deg, #0072ff, #00c6ff); }
+    .btn-orange { background: linear-gradient(135deg, #f7971e, #ffd200); color: #111; }
+    .btn-red    { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
 
-    .action-buttons {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    /* ===== TOAST ===== */
-    #toast {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      color: white;
-      opacity: 0;
-      transform: translateY(-10px);
-      transition: all 0.3s ease;
-      z-index: 999;
-      pointer-events: none;
-    }
-    #toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ===== STATS ===== */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 30px;
-    }
-    .stat-box {
-      background: #1a1a2e;
-      border: 1px solid #2a2a4a;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-    }
-    .stat-box .num {
-      font-size: 32px;
-      font-weight: 700;
-      background: linear-gradient(90deg, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
+    .stat-box { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 20px; text-align: center; }
+    .stat-box .num { font-size: 32px; font-weight: 700; background: linear-gradient(90deg, #00c6ff, #0072ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .stat-box .label { font-size: 12px; color: #888; margin-top: 4px; }
 
-    /* ===== TABLE ===== */
-    .table-wrapper { overflow-x: auto; }
+    .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .search-box { padding: 10px 16px; background: #0f0f1a; border: 1px solid #2a2a4a; border-radius: 8px; color: #e0e0e0; font-size: 14px; outline: none; width: 220px; }
+    .search-box:focus { border-color: #0072ff; }
+
     table { width: 100%; border-collapse: collapse; }
-    thead tr { border-bottom: 2px solid #2a2a4a; }
-    th {
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #00c6ff;
-    }
-    tbody tr {
-      border-bottom: 1px solid #1e1e35;
-      transition: background 0.2s;
-    }
-    tbody tr:hover { background: #1e1e35; }
-    td { padding: 14px 16px; font-size: 14px; }
+    th { padding: 14px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #00c6ff; border-bottom: 2px solid #2a2a4a; }
+    td { padding: 14px 16px; font-size: 14px; border-bottom: 1px solid #1e1e35; }
+    tbody tr:hover td { background: #1e1e35; }
 
-    .badge {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      background: #0072ff22;
-      color: #00c6ff;
-      border: 1px solid #0072ff44;
-    }
-
-    .row-btn {
-      padding: 6px 14px;
-      border: none;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      margin-right: 6px;
-      transition: opacity 0.2s;
-    }
-    .row-btn:hover { opacity: 0.8; }
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; background: #0072ff22; color: #00c6ff; border: 1px solid #0072ff44; }
+    .row-btn { padding: 6px 14px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; margin-right: 6px; }
     .row-edit   { background: #0072ff22; color: #00c6ff; border: 1px solid #0072ff44; }
     .row-delete { background: #ef473a22; color: #ef473a; border: 1px solid #ef473a44; }
 
-    /* ===== EMPTY STATE ===== */
-    .empty {
-      text-align: center;
-      padding: 40px;
-      color: #555;
-    }
+    .empty { text-align: center; padding: 40px; color: #555; }
     .empty span { font-size: 40px; display: block; margin-bottom: 10px; }
 
-    /* ===== SEARCH ===== */
-    .table-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .search-box {
-      padding: 10px 16px;
-      background: #0f0f1a;
-      border: 1px solid #2a2a4a;
-      border-radius: 8px;
-      color: #e0e0e0;
-      font-size: 14px;
-      outline: none;
-      width: 220px;
-      transition: border 0.2s;
-    }
-    .search-box:focus { border-color: #0072ff; }
+    #toast { position: fixed; top: 24px; right: 24px; padding: 14px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; color: white; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; z-index: 999; pointer-events: none; }
+    #toast.show { opacity: 1; transform: translateY(0); }
 
-    /* ===== RESPONSIVE ===== */
+    .storage-info { font-size: 11px; color: #555; margin-top: 8px; }
+    .storage-info span { color: #00c6ff; }
+
     @media (max-width: 640px) {
       .form-grid { grid-template-columns: 1fr; }
       .action-buttons { grid-template-columns: 1fr 1fr; }
       .stats { grid-template-columns: 1fr; }
-      .table-header { flex-direction: column; gap: 10px; }
     }
   </style>
 </head>
@@ -243,13 +72,13 @@
 
   <div class="container">
 
-    <!-- ===== HEADER ===== -->
+    <!-- HEADER -->
     <div class="header">
       <h1>⚡ Users Manager</h1>
-      <p>Full CRUD — connected to your Express API</p>
+      <p>No database needed — powered by LocalStorage & SessionStorage</p>
     </div>
 
-    <!-- ===== STATS ===== -->
+    <!-- STATS -->
     <div class="stats">
       <div class="stat-box">
         <div class="num" id="stat-total">0</div>
@@ -265,23 +94,20 @@
       </div>
     </div>
 
-    <!-- ===== FORM CARD ===== -->
+    <!-- FORM -->
     <div class="card">
       <h2>🛠 Manage User</h2>
       <div class="form-grid">
         <div class="field">
-          <label>ID <span style="color:#555">(for update / delete)</span></label>
-          <input type="number" id="id" placeholder="e.g. 3" />
-        </div>
-        <div class="field">
           <label>Name</label>
-          <input type="text" id="name" placeholder="e.g. John Doe" />
+          <input type="text"  id="name"  placeholder="e.g. John Doe" oninput="saveDraft()" />
         </div>
         <div class="field">
           <label>Email</label>
-          <input type="email" id="email" placeholder="e.g. john@email.com" />
+          <input type="email" id="email" placeholder="e.g. john@email.com" oninput="saveDraft()" />
         </div>
       </div>
+      <p class="storage-info">✏️ Draft auto-saved in <span>SessionStorage</span> — won't be lost on refresh</p>
 
       <div class="action-buttons">
         <button class="btn btn-green"  onclick="getUsers()">🔍 GET All</button>
@@ -289,114 +115,152 @@
         <button class="btn btn-orange" onclick="updateUser()">✏️ PUT Update</button>
         <button class="btn btn-red"    onclick="deleteUser()">🗑 DELETE</button>
       </div>
+
+      <input type="hidden" id="edit-id" />
     </div>
 
-    <!-- ===== TABLE CARD ===== -->
+    <!-- TABLE -->
     <div class="card">
       <div class="table-header">
         <h2 style="margin:0">📋 Users List</h2>
         <input class="search-box" id="search" placeholder="🔎 Search..." oninput="filterTable()" />
       </div>
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="user-table">
-            <tr><td colspan="5"><div class="empty"><span>👤</span>No users loaded</div></td></tr>
-          </tbody>
-        </table>
-      </div>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody id="user-table"></tbody>
+      </table>
+      <p class="storage-info" style="margin-top:12px">💾 All data saved in <span>LocalStorage</span> — persists after closing browser</p>
     </div>
 
   </div>
 
 
   <script>
-    const API = "http://localhost:3000/users";
-    let allUsers = [];
+
+    // =====================
+    //   LOCALSTORAGE HELPERS
+    // =====================
+    function getAll() {
+      return JSON.parse(localStorage.getItem("users") || "[]");
+    }
+
+    function saveAll(users) {
+      localStorage.setItem("users", JSON.stringify(users));
+    }
+
+
+    // =====================
+    //   SESSIONSTORAGE DRAFT
+    // =====================
+    function saveDraft() {
+      sessionStorage.setItem("draft_name",  document.getElementById("name").value);
+      sessionStorage.setItem("draft_email", document.getElementById("email").value);
+    }
+
+    function loadDraft() {
+      const name  = sessionStorage.getItem("draft_name");
+      const email = sessionStorage.getItem("draft_email");
+      if (name)  document.getElementById("name").value  = name;
+      if (email) document.getElementById("email").value = email;
+    }
+
+    function clearDraft() {
+      sessionStorage.removeItem("draft_name");
+      sessionStorage.removeItem("draft_email");
+    }
 
 
     // =====================
     //        GET
     // =====================
-    async function getUsers() {
-      const res   = await fetch(API);
-      allUsers    = await res.json();
-      renderTable(allUsers);
-      updateStats(allUsers);
-      showToast("Users loaded successfully", "#11998e");
+    function getUsers() {
+      const users = getAll();
+      renderTable(users);
+      updateStats(users);
+      showToast("Users loaded from LocalStorage", "#11998e");
     }
 
 
     // =====================
-    //        POST
+    //        ADD (POST)
     // =====================
-    async function addUser() {
+    function addUser() {
       const name  = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
       if (!name || !email) return showToast("Please enter name and email", "#cb2d3e");
 
-      const res  = await fetch(API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email })
-      });
-      const data = await res.json();
-      showToast("User added! ID: " + data.id, "#0072ff");
-      clearInputs();
+      const users = getAll();
+      const newId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+      users.push({ id: newId, name, email });
+      saveAll(users);
+
+      showToast("User added! ID: " + newId, "#0072ff");
+      clearForm();
+      clearDraft();
       getUsers();
     }
 
 
     // =====================
-    //        PUT
+    //      UPDATE (PUT)
     // =====================
-    async function updateUser() {
-      const id    = document.getElementById("id").value.trim();
+    function updateUser() {
+      const id    = parseInt(document.getElementById("edit-id").value);
       const name  = document.getElementById("name").value.trim();
       const email = document.getElementById("email").value.trim();
-      if (!id || !name || !email) return showToast("Please enter ID, name and email", "#cb2d3e");
+      if (!id)           return showToast("Click Edit on a row first", "#cb2d3e");
+      if (!name || !email) return showToast("Please enter name and email", "#cb2d3e");
 
-      await fetch(API + "/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email })
-      });
+      const users = getAll().map(u => u.id === id ? { ...u, name, email } : u);
+      saveAll(users);
+
       showToast("User #" + id + " updated", "#f7971e");
-      clearInputs();
+      clearForm();
+      clearDraft();
       getUsers();
     }
 
 
     // =====================
-    //       DELETE
+    //      DELETE
     // =====================
-    async function deleteUser() {
-      const id = document.getElementById("id").value.trim();
-      if (!id) return showToast("Please enter an ID to delete", "#cb2d3e");
+    function deleteUser() {
+      const id = parseInt(document.getElementById("edit-id").value);
+      if (!id) return showToast("Click Edit on a row first to select", "#cb2d3e");
 
-      await fetch(API + "/" + id, { method: "DELETE" });
+      const users = getAll().filter(u => u.id !== id);
+      saveAll(users);
+
       showToast("User #" + id + " deleted", "#cb2d3e");
-      clearInputs();
+      clearForm();
+      getUsers();
+    }
+
+    function quickDelete(id) {
+      const users = getAll().filter(u => u.id !== id);
+      saveAll(users);
+      showToast("User #" + id + " deleted", "#cb2d3e");
       getUsers();
     }
 
 
     // =====================
-    //    FILL FORM (row)
+    //    FILL FORM (edit)
     // =====================
     function fillForm(id, name, email) {
-      document.getElementById("id").value    = id;
-      document.getElementById("name").value  = name === "null" || name === "-" ? "" : name;
-      document.getElementById("email").value = email === "null" || email === "-" ? "" : email;
+      document.getElementById("edit-id").value = id;
+      document.getElementById("name").value    = name;
+      document.getElementById("email").value   = email;
       window.scrollTo({ top: 0, behavior: "smooth" });
+      showToast("Editing User #" + id, "#0072ff");
+    }
+
+    function clearForm() {
+      document.getElementById("edit-id").value = "";
+      document.getElementById("name").value    = "";
+      document.getElementById("email").value   = "";
     }
 
 
@@ -406,19 +270,15 @@
     function renderTable(users) {
       const tbody = document.getElementById("user-table");
       if (users.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><span>👤</span>No users found</div></td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty"><span>👤</span>No users yet — add one!</div></td></tr>`;
         return;
       }
       tbody.innerHTML = users.map(u => `
         <tr>
           <td><span class="badge">#${u.id}</span></td>
-          <td>${u.name ?? "-"}</td>
-          <td>${u.email ?? "-"}</td>
-          <td>
-            ${u.name
-              ? `<span style="color:#38ef7d;font-size:12px;">● Active</span>`
-              : `<span style="color:#555;font-size:12px;">● Empty</span>`}
-          </td>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td>${u.name ? `<span style="color:#38ef7d;font-size:12px">● Active</span>` : `<span style="color:#555;font-size:12px">● Empty</span>`}</td>
           <td>
             <button class="row-btn row-edit"   onclick="fillForm(${u.id}, '${u.name}', '${u.email}')">Edit</button>
             <button class="row-btn row-delete" onclick="quickDelete(${u.id})">Delete</button>
@@ -429,24 +289,14 @@
 
 
     // =====================
-    //    QUICK DELETE
-    // =====================
-    async function quickDelete(id) {
-      await fetch(API + "/" + id, { method: "DELETE" });
-      showToast("User #" + id + " deleted", "#cb2d3e");
-      getUsers();
-    }
-
-
-    // =====================
     //      SEARCH
     // =====================
     function filterTable() {
       const q = document.getElementById("search").value.toLowerCase();
-      const filtered = allUsers.filter(u =>
+      const filtered = getAll().filter(u =>
         String(u.id).includes(q) ||
-        (u.name  && u.name.toLowerCase().includes(q)) ||
-        (u.email && u.email.toLowerCase().includes(q))
+        u.name.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q)
       );
       renderTable(filtered);
     }
@@ -464,25 +314,23 @@
 
 
     // =====================
-    //      HELPERS
+    //      TOAST
     // =====================
-    function clearInputs() {
-      document.getElementById("id").value    = "";
-      document.getElementById("name").value  = "";
-      document.getElementById("email").value = "";
-    }
-
     function showToast(msg, color) {
       const t = document.getElementById("toast");
-      t.textContent       = msg;
-      t.style.background  = color;
+      t.textContent      = msg;
+      t.style.background = color;
       t.classList.add("show");
       setTimeout(() => t.classList.remove("show"), 3000);
     }
 
 
-    // Load on start
+    // =====================
+    //      ON LOAD
+    // =====================
+    loadDraft();
     getUsers();
+
   </script>
 
 </body>
